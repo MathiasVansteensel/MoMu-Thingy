@@ -6,31 +6,80 @@ public class narrativeText_script : MonoBehaviour
 {
     Rigidbody rb;
     Collider textcol;
-    TextMeshPro narrativeText;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        narrativeText.enabled = false;
-    }
+    [SerializeField] private TextMeshPro textToFade;  // For UI Text
+    // If using 3D TextMeshPro, change to: private TextMeshPro textToFade;
+
+    [SerializeField] private float fadeDuration = 2f;  // Seconds to fully fade in
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Player")
         {
-            narrativeText.enabled = true;
+            Debug.Log("IIIIIIIIIII HAVE ENTERED THE SPHERE!");
+            StartCoroutine(FadeInText());
         }
 
     }
 
-    IEnumerator Azerty()
+    private void OnTriggerExit(Collider other)
     {
-        
+        if (other.tag == "Player")
+        {
+            StartCoroutine(FadeOutText());
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    private IEnumerator FadeInText()
     {
+        if (textToFade == null)
+        {
+            Debug.LogWarning("No TextMeshPro object assigned!");
+            yield break;
+        }
 
+        Color originalColor = textToFade.color;
+        float elapsedTime = 0f;
+
+        // Start with 0 alpha
+        textToFade.color = new Color(originalColor.r, originalColor.g, originalColor.b, 0f);
+
+        while (elapsedTime < fadeDuration)
+        {
+            float newAlpha = Mathf.Clamp01(elapsedTime / fadeDuration);
+            textToFade.color = new Color(originalColor.r, originalColor.g, originalColor.b, newAlpha);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // Ensure final alpha = 1
+        textToFade.color = new Color(originalColor.r, originalColor.g, originalColor.b, 1f);
     }
+    
+    private IEnumerator FadeOutText()
+    {
+        if (textToFade == null)
+        {
+            Debug.LogWarning("No TextMeshPro object assigned!");
+            yield break;
+        }
+
+        Color originalColor = textToFade.color;
+        float elapsedTime = 0f;
+
+        // Ensure text starts fully visible
+        textToFade.color = new Color(originalColor.r, originalColor.g, originalColor.b, 1f);
+
+        while (elapsedTime < fadeDuration)
+        {
+            float newAlpha = Mathf.Clamp01(1f - (elapsedTime / fadeDuration));
+            textToFade.color = new Color(originalColor.r, originalColor.g, originalColor.b, newAlpha);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // Ensure final alpha = 0
+        textToFade.color = new Color(originalColor.r, originalColor.g, originalColor.b, 0f);
+    }
+
 }
