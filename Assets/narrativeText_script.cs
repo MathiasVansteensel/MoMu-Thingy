@@ -8,6 +8,7 @@ public class narrativeText_script : MonoBehaviour
     Collider textcol;
 
     [SerializeField] private TextMeshPro textToFade;  // For UI Text
+    [SerializeField] private GameObject EnableObject;  // For UI Text
     // If using 3D TextMeshPro, change to: private TextMeshPro textToFade;
 
     [SerializeField] private float fadeDuration = 2f;  // Seconds to fully fade in
@@ -18,6 +19,7 @@ public class narrativeText_script : MonoBehaviour
         {
             Debug.Log("IIIIIIIIIII HAVE ENTERED THE SPHERE!");
             StartCoroutine(FadeInText());
+            EnableObject.SetActive(true);
         }
 
     }
