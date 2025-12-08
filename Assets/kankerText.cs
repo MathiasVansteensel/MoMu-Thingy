@@ -19,7 +19,7 @@ public class kankerText : MonoBehaviour
 
             textMeshes.Add(tm);
         }
-        Debug.Log(textMeshes.Count);
+        //Debug.Log(textMeshes.Count);
     }
 
     //TODO: add support for dynamically spawned meshes by hooking instanciate event and checking types for tmpGUI
@@ -33,7 +33,7 @@ public class kankerText : MonoBehaviour
             var textPos = text.transform.position;
             float distance = Vector3.Distance(textPos, playerPos);
             float fadeFac = 1 - Mathf.Min(1, Mathf.Pow(distance / maxDistance, falloff));
-            Debug.Log(fadeFac);
+            //Debug.Log(fadeFac);
             text.alpha = fadeFac;
         }
     }
