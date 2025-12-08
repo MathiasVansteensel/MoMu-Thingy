@@ -13,6 +13,8 @@ Shader "Universal Render Pipeline/Custom/DisplacedLit"
         _Reflectance("Reflectance (dielectrics)", Range(0.0, 1.0)) = 0.5
         _Smoothness("Smoothness", Range(0.0, 1.0)) = 0.5
 
+        _DisplacementScale("Displacement Scale", Float) = 1.0
+
         [Toggle(_NORMALMAP)] _EnableNormalMap("Enable Normal Map", Float) = 0.0
         [Normal][NoScaleOffset]_NormalMap("Normal Map", 2D) = "bump" {}
         _NormalMapScale("Normal Map Scale", Float) = 1.0
@@ -38,6 +40,7 @@ Shader "Universal Render Pipeline/Custom/DisplacedLit"
         half _Smoothness;
         half4 _Emission;
         half _NormalMapScale;
+        float _DisplacementScale;
         CBUFFER_END
 
         // Structured buffer of vertex displacements
@@ -74,28 +77,53 @@ Shader "Universal Render Pipeline/Custom/DisplacedLit"
             {
                 Varyings OUT;
 
-                // apply displacement
-                float3 displacement = _Displacements[vertexID];
+                // --- Apply displacement
+                float3 displacement = _Displacements[vertexID] * _DisplacementScale;
                 float3 displacedPosOS = IN.positionOS.xyz + displacement;
 
-                VertexPositionInputs vertexInput = GetVertexPositionInputs(displacedPosOS);
-                VertexNormalInputs vertexNormalInput = GetVertexNormalInputs(IN.normalOS, IN.tangentOS);
+                // Transform position to world space
+                float4 posWS = float4(TransformObjectToWorld(displacedPosOS), 1.0);
+                OUT.positionWS = posWS.xyz;
 
+                // Transform to clip space for SV_POSITION
+                OUT.positionCS = TransformWorldToHClip(posWS.xyz);
+
+                // Pass UVs
                 OUT.uv = IN.uv;
                 #if LIGHTMAP_ON
                 OUT.uvLightmap = IN.uvLightmap.xy * unity_LightmapST.xy + unity_LightmapST.zw;
                 #endif
 
-                OUT.positionWS = vertexInput.positionWS;
-                OUT.normalWS = vertexNormalInput.normalWS;
+                // --- Compute approximate normal using screen-space derivatives
+                // This will give a normal that matches displaced geometry for lighting
+                float3 displacedPos = IN.positionOS + _Displacements[vertexID] * _DisplacementScale;
+
+                // Original vertex-space tangent/normal
+                float3 N = IN.normalOS;
+                float3 T = IN.tangentOS.xyz;
+                float3 B = cross(N, T) * IN.tangentOS.w;
+
+                // Tiny offsets along tangent space
+                float eps = 0.001;
+                float3 dp1 = displacedPos + T * eps;
+                float3 dp2 = displacedPos + B * eps;
+
+                // Approximate normal in object space
+                float3 approxNormal = normalize(cross(dp2 - displacedPos, dp1 - displacedPos));
+
+                // Transform to world space
+                OUT.normalWS = normalize(TransformObjectToWorldDir(approxNormal));
+
+
 
                 #ifdef _NORMALMAP
-                OUT.tangentWS = float4(vertexNormalInput.tangentWS, IN.tangentOS.w * GetOddNegativeScale());
+                // Keep tangent if you still want normal maps
+                OUT.tangentWS = float4(IN.tangentOS.xyz, IN.tangentOS.w);
                 #endif
 
-                OUT.positionCS = vertexInput.positionCS;
                 return OUT;
             }
+
 
             // --- Surface data generation
             void SurfaceFunction(Varyings IN, out CustomSurfaceData surfaceData)
