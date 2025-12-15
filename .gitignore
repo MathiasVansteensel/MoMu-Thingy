@@ -10,6 +10,7 @@
 /[Bb]uilds/
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
+/*_BurstDebugInformation_DoNotShip/
 *.log
 
 # By default unity supports Blender asset imports, *.blend1 blender files do not need to be commited to version control.
@@ -66,8 +67,8 @@ sysinfo.txt
 # Mono auto generated files
 mono_crash.*
 
-# Builds
-*.apk
+# Builds (APKs allowed for now)
+# *.apk
 *.aab
 *.unitypackage
 *.unitypackage.meta
