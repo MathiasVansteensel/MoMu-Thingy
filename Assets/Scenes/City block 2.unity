@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: d4454f71d85928744be7771e2143dab7, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -1276,7 +1276,7 @@ Transform:
   m_GameObject: {fileID: 77060232}
   serializedVersion: 2
   m_LocalRotation: {x: -0.55229294, y: 0.44155717, z: 0.44155693, w: 0.55229276}
-  m_LocalPosition: {x: -69.13, y: -3.36, z: 49.88}
+  m_LocalPosition: {x: -69.13, y: -3.94, z: 49.88}
   m_LocalScale: {x: 190, y: 120, z: 120}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -21612,7 +21612,7 @@ Transform:
   m_GameObject: {fileID: 1537777222}
   serializedVersion: 2
   m_LocalRotation: {x: -0.68064237, y: -0.19164057, z: -0.19164048, w: 0.68064225}
-  m_LocalPosition: {x: -68.94, y: -3.36, z: 33.91}
+  m_LocalPosition: {x: -68.94, y: -3.822, z: 33.91}
   m_LocalScale: {x: 190, y: 120, z: 120}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -29891,6 +29891,7 @@ GameObject:
   - component: {fileID: 4829238659072197187}
   - component: {fileID: 2357945775143760871}
   - component: {fileID: 5170758105898489763}
+  - component: {fileID: 5170758105898489764}
   m_Layer: 0
   m_Name: Barrel_low
   m_TagString: Untagged
@@ -30970,6 +30971,103 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.025614144, y: 0.025614144, z: 0.02}
   m_Center: {x: -0.000000059604645, y: 0.00000023841858, z: 0.01}
+--- !u!82 &5170758105898489764
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1160449768692747941}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: b84ad7b711e403742b9f85f9ff2a21ff, type: 3}
+  m_Resource: {fileID: 8300000, guid: b84ad7b711e403742b9f85f9ff2a21ff, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 0.663
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!33 &5273446220280073329
 MeshFilter:
   m_ObjectHideFlags: 0
