@@ -1,15 +1,31 @@
 using UnityEngine;
-using System.Collections; // Required for Coroutines
-using UnityEngine.SceneManagement; // Required for scene operations
+using System.Collections;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class DelayedSceneChange : MonoBehaviour
 {
-    [Header("Settings")]
+    [Header("Scene Settings")]
     public string targetSceneName = "Libqry";
     public float delayInSeconds = 2.0f;
-    private bool hasCollided = false; // Prevents multiple trigger calls
 
-    // Called when another Collider enters this object's trigger
+    [Header("Fade Settings")]
+    public Image fadeImage;          // Fullscreen UI Image
+    public float fadeDuration = 1.0f;
+
+    private bool hasCollided = false;
+
+    private void Start()
+    {
+        // Ensure fade starts transparent
+        if (fadeImage != null)
+        {
+            Color c = fadeImage.color;
+            c.a = 0f;
+            fadeImage.color = c;
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player") && !hasCollided)
@@ -17,18 +33,36 @@ public class DelayedSceneChange : MonoBehaviour
             hasCollided = true;
             Debug.Log("Collision detected");
 
-            // Start the Coroutine to handle the delay and scene load
-            StartCoroutine(DelayAndLoadScene());
+            StartCoroutine(FadeAndLoadScene());
         }
     }
 
-    // Coroutine to handle the delay
-    private IEnumerator DelayAndLoadScene()
+    private IEnumerator FadeAndLoadScene()
     {
-        // Wait for the specified amount of time
+        // Optional delay before fade starts
         yield return new WaitForSeconds(delayInSeconds);
 
-        // Once the delay is over, load the new scene
+        // Fade out
+        yield return StartCoroutine(FadeOut());
+
+        // Load scene after fade
         SceneManager.LoadScene(targetSceneName);
+    }
+
+    private IEnumerator FadeOut()
+    {
+        float elapsedTime = 0f;
+        Color c = fadeImage.color;
+
+        while (elapsedTime < fadeDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            c.a = Mathf.Clamp01(elapsedTime / fadeDuration);
+            fadeImage.color = c;
+            yield return null;
+        }
+
+        c.a = 1f;
+        fadeImage.color = c;
     }
 }
